@@ -95,23 +95,67 @@ docker rmi image_id
 
 启动容器：
 
-~~~shell
+~~~bash
 docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 docker run --name=mynginx nginx
 ~~~
 
 停止容器
 
-~~~shell
+~~~bash
 docker rm mynginx
 docker rm 86567389012e
 
 docker stop
 docker start
 docker restart
+docker update "image" 
 ~~~
 
+通过 ip 启动容器，想通过公网 ip 访问 - 大主机开一个端口 - 让大主机端口 88 转到 对应端口的 容器端口，端口映射：
 
+~~~bash
+docker rm -f mynginx # 强制删除正在运行中的
+docker run --name=mynginx -d --restart=always -p 88:80 nginx
+~~~
+
+修改 nginx 页面（也即进入容器内部修改）
+
+~~~bash
+docker exec -it 341d81f7604f /bin/bash # 进入容器内，一个小型linux环境
+cd /usr/share/nginx/html/
+~~~
+
+提交改变：（以前所有软件的变化整体打包，比如vscode的设置等，这些环境的改变都打包）
+
+~~~bash
+docker commit --help 
+docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+docker commit -a "leifengyang" -m "首页变化" 341d81f7504f guignginx:v1.0
+# 如果有一天容器突然崩溃了
+docker run -d -p 88:80 --name mynginx nginx # 会是之前默认的镜像
+docker run -d -p 88:80 guignginx:v1.0
+docker save --help
+docker save -o abc.tar guignginx:v1.0 # 把镜像变成一个实体文件
+scp abc.tar root@139.198.189.134:/root/ # 把镜像复制到本地
+docker load -i abc.tar # 加载镜像
+
+~~~
+
+推送到远程仓库，推送镜像到 docker hub（和 github 类似的操作），以及下拉镜像
+
+~~~bash
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+
+docker tag guignginx:v1.0 leifengyang/guignginx:v1.0
+docker login
+docker push leifengyang/guignginx:v1.0
+docker logout
+docker pull leifengyang/guignginx:v1.0
+~~~
+
+挂载数据
 
 
 
