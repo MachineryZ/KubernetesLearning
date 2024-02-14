@@ -162,6 +162,18 @@ docker run --name=mynginx -d --restart=always \
 -p 88:20 -v /data/html /usr/share/nginx/html:ro nginx
 ~~~
 
+~~~bash
+docker logs 容器名/id # 排查错误
+docker exec -it 容器id /bin/bash
+
+# docker 经常修改nginx配置文件
+docker run -d -p 88:80 \
+-v /data/html:/usr/share/nginx/html:ro \
+-v /data/conf/nginx.conf:/etc/nginx/nginx.conf \
+--name mynginx-02 \
+nginx
+~~~
+
 
 
 
