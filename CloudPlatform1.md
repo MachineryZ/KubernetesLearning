@@ -155,7 +155,14 @@ docker logout
 docker pull leifengyang/guignginx:v1.0
 ~~~
 
-挂载数据
+ 挂载数据到外部修改
+
+~~~bash
+docker run --name=mynginx -d --restart=always \
+-p 88:20 -v /data/html /usr/share/nginx/html:ro nginx
+~~~
+
+
 
 
 
