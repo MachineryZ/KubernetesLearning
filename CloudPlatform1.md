@@ -1,5 +1,7 @@
 参考资料：https://www.bilibili.com/video/BV13Q4y1C7hS/?p=4&spm_id_from=pageDriver&vd_source=8635806d840eebcb9ee311685fcbaeaf 
 
+https://www.yuque.com/leifengyang/oncloud/ctiwgo
+
 # 云平台
 
 1. 公有云
@@ -172,6 +174,10 @@ docker run -d -p 88:80 \
 -v /data/conf/nginx.conf:/etc/nginx/nginx.conf \
 --name mynginx-02 \
 nginx
+
+# 复制配置文件内容
+docker cp 5eff66ec7e1:/etc/nginx/nginx.conf /data/conf/nginx.com
+
 ~~~
 
 
