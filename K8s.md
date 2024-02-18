@@ -40,6 +40,51 @@ K8s 集群部署
 - 安装 docker，kubelet，kubectl（对k8s的命令行），kubeadm（安装k8s的快速仓库），
 - Master kubeadm init（安装各种 k8s 组件）
 - worker node kubeadm join（加入当前 master 节点）
+
+青云服务器的一些资源申请，然后进行小 project ；申请 3 node，master 节点一个，剩下两个是 worker node。内网穿透（什么是内网穿透？ 内网穿透，简单地说就是**内网的数据让外网可以获取，可以映射到公共网络上，这样就可以在公共网络上访问内网的数据**。 内网是不能被外网直接访问的，只能通过一些中转技术，如DingTalk Design CLI、花生壳、Natap 等工具，让内网“假装”成外网，就是内网穿透。） 
+
+---
+
+实战
+
+Kubernetes 集群部署 
+
+- 配置 yum 源
+- 配置 yum
+- 安装 docker
+- 启动 docker
+- selinux 设置为   permissive 模式
+- 关闭 swap 
+- 安装 kubelet、kubeadm、kubectl
+
+~~~bash
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+   http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+EOF
+
+
+sudo yum install -y kubelet-1.20.9 kubeadm-1.20.9 kubectl-1.20.9 --disableexcludes=kubernetes
+
+sudo systemctl enable --now kubelet
+~~~
+
+- 初始化 master 节点
+- 增加网络插件
+- 加入 node 节点
+- 验证集群，查看集群部署了哪些应用（运行中的应用在 docker 里面叫容器，在 k8s 里面叫 pod
+- 部署 dashboard
+- 等待 nodes 节点全部 ready 然后开始跑命令
+- 全部命令需要在 master 节点上进行
+- 集群自修复能力
+- 设置访问端口
 - 
 
 
